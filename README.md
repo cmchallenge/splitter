@@ -59,6 +59,7 @@ To split events into trips, you must implement the following rules:
     1. order joining should be transitive: 3 trips respectively with `['order_a']`, `['order_a', 'order_b']`, `['order_b']` should all be joined together
     2. can join trips that both include a "delivered" event
     3. can join trips that occur at non-adjacent times
+    4. does not join between trips with different container numbers
 
 Example
 -------
