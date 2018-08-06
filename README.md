@@ -55,11 +55,8 @@ To split events into trips, you must implement the following rules:
 2. Split after an event_type is `'delivered'`
 3. Split between two consecutive events > 90 days apart with different locations
 4. Split between two consecutive events > 180 days apart
-5. After all of a container's events are split as described above, all trips which share orders should be merged.
-    1. order joining should be transitive: 3 trips respectively with `['order_a']`, `['order_a', 'order_b']`, `['order_b']` should all be joined together
-    2. can join trips that both include a "delivered" event
-    3. can join trips that occur at non-adjacent times
-    4. does not join between trips with different container numbers
+5. After splitting the events using rules 1-4, collect all orders for each grouping, and merge groupings that share a container and have overlapping orders.
+   Order joining should be transitive: 3 trips respectively with `['order_a']`, `['order_a', 'order_b']`, `['order_b']` should all be joined together.
 
 Example
 -------
@@ -71,42 +68,42 @@ INPUT:
     "id": 1,
     "container": "container_2",
     "location": "Savannah",
-    "time": "2018-10-06T00:00:00",
-    "type": "depart",
+    "event_time": "2018-10-06T00:00:00",
+    "event_code": "depart",
     "orders": ["order_c"]
   },
   {
     "id": 11,
     "container": "container_123456789",
     "location": "Savannah",
-    "time": "2018-10-07T00:00:00",
-    "type": "delivered",
+    "event_time": "2018-10-07T00:00:00",
+    "event_code": "delivered",
     "orders": []
   },
   {
     "id": 2,
     "container": "container_2",
     "location": "Long_Beach",
-    "time": "2018-10-09T00:00:00",
-    "type": "delivered",
+    "event_time": "2018-10-09T00:00:00",
+    "event_code": "delivered",
     "orders": ["order_d"]
   },
   {
     "id": 3,
     "container": "container_2",
     "location": "Hong_Kong",
-    "time": "2019-11-13T00:00:00",
-    "type": "arrive",
+    "event_time": "2018-11-13T00:00:00",
+    "event_code": "arrive",
     "orders": []
   },
   {
     "id": 4,
     "container": "container_2",
     "location": "San_Francisco",
-    "time": "2019-12-02T00:00:00",
-    "type": "delivered",
+    "event_time": "2019-12-02T00:00:00",
+    "event_code": "delivered",
     "orders": ["order_d"]
-  },
+  }
 ]
 ```
 
